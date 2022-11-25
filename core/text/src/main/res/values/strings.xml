@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="general_error_message">Noe gikk galt</string>
+    <string name="error_no_connection">No internet connection</string>
+    <string name="error_dialog_button_ok">Ok</string>
+    <string name="error_dialog_title_ooops">Ooops, noe gikk galt</string>
+    <string name="add">Legg til</string>
+    <string name="id">Id</string>
+    <string name="name">Navn</string>
+    <string name="type">Type</string>
+    <string name="delete">Slett</string>
+    <string name="teststr">test</string>
+</resources>
