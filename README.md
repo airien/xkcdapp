@@ -47,6 +47,9 @@ Tadaaaaa here it is. Presenting the amazing XKCD App! :boom: :tada: :star2:
 ![alt screenshots](images/screenshot1.jpg)
 ![alt screenshots](images/screenshot2.jpg)
 
+Here is the apk
+[File](files/xkcd.apk)
+
 ## The process
 I started by reading the requirements, writing them down in my understanding and thinking how to approach it.
 Next step was to draw some basic sketches on paper and go over some ideas for how it could look.
