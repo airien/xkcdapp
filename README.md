@@ -66,6 +66,7 @@ I decided to make some choices as to what could be in the next version:
 - Share image with the link when sharing a comic with others
 
 I also decided, due to time constraints, to not do unit and integration tests for this assignment. We can talk about tests if anyone wonders, I do think they are important.
+
 I have a pragmatic approach to testing:
 - Test where it is needed and data is changed
 - Do not test other peoples code -> So only test what I have done, not that libraries do their jobs
