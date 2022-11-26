@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import no.hanne.xkcd.R.string
 import no.hanne.xkcd.core.ui.components.ErrorDialog
+import no.hanne.xkcd.features.favourite.FavouriteScreen
 import no.hanne.xkcd.features.home.HomeScreen
 import no.hanne.xkcd.features.search.SearchScreen
 import no.hanne.xkcd.features.splash.SplashScreen
@@ -56,6 +57,9 @@ fun Navigation(
             SplashScreen(navController)
         }
 
+        composable(Route.Favourites.destination) {
+            FavouriteScreen(navController)
+        }
         composable(
             route = "${Route.Search.destination}{term}/{latest}",
             arguments = listOf(

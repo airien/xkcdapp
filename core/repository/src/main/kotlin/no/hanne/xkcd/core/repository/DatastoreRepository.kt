@@ -9,15 +9,12 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
-import java.io.IOException
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import timber.log.Timber
+import javax.inject.Inject
 
 interface DatastoreRepository {
     suspend fun getFavourites(): List<Int>
@@ -38,8 +35,9 @@ class DatastoreRepositoryImpl @Inject constructor(
 
     override suspend fun getFavourites(): List<Int> {
         val favourites = get(PreferencesKeys.FAVORITES)
+        if (favourites.isNullOrEmpty()) return listOf()
         return favourites?.let { f ->
-            listOf(*f.split(",").toTypedArray()).map { it.toInt() }
+            listOf(*f.split(",").toTypedArray()).map { it.trim().toInt() }
         } ?: run { mutableListOf() }
     }
 
@@ -48,7 +46,7 @@ class DatastoreRepositoryImpl @Inject constructor(
         if (!list.contains(num)) {
             list.add(num)
         }
-        set(PreferencesKeys.FAVORITES, list.joinToString())
+        set(PreferencesKeys.FAVORITES, list.joinToString(separator = ","))
     }
 
     override suspend fun removeFavourite(num: Int) {
@@ -75,17 +73,6 @@ class DatastoreRepositoryImpl @Inject constructor(
                 application.preferencesDataStoreFile(dataStoreFilename)
             }
         )
-    private fun <T> getFlow(preferenceKey: Preferences.Key<T>) = dataStore.data
-        .catch { e ->
-            if (e is IOException) {
-                Timber.e(e)
-                emit(emptyPreferences())
-            } else {
-                throw e
-            }
-        }.map { data ->
-            data[preferenceKey]
-        }
     private suspend fun <T> get(preferencesKey: Preferences.Key<T>) =
         try {
             dataStore.data.first()[preferencesKey]

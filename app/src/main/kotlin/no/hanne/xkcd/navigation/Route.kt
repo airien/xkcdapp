@@ -5,6 +5,7 @@ enum class Route(val destination: String, val parameter: String? = null) {
     Login("/profile"),
     Search("search/"),
     Splash("/splash"),
+    Favourites("/favourite")
 }
 fun Route.withParameters(values: List<Any?>): String {
     return this.destination.plus(values.joinToString(separator = "/"))

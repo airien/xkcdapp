@@ -1,19 +1,18 @@
 package no.hanne.xkcd.features.home
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons.Rounded
-import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,16 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import no.hanne.xkcd.R
 import no.hanne.xkcd.core.ui.components.AppRoundIconButton
 import no.hanne.xkcd.core.ui.components.ErrorDialog
 import no.hanne.xkcd.core.ui.components.PopUpDialog
+import no.hanne.xkcd.core.ui.theme.GOLD
 import no.hanne.xkcd.navigation.Route
 import no.hanne.xkcd.navigation.withParameters
 
@@ -42,7 +40,6 @@ import no.hanne.xkcd.navigation.withParameters
         hiltViewModel<HomeViewModelImpl>()
 ) {
     var showSearchPopup by remember { mutableStateOf(false) }
-    val context = LocalContext.current
     LaunchedEffect("view-effects") {
         viewModel.viewEffect.collect { viewEffect: HomeViewEffect ->
             when (viewEffect) {
@@ -82,7 +79,8 @@ import no.hanne.xkcd.navigation.withParameters
                             .fillMaxWidth()
                             .weight(1f)
                             .padding(vertical = 16.dp),
-                        comic = viewModel.comic
+                        comic = viewModel.comic,
+                        explainLink = viewModel.explainLink
                     )
                 }
                 true -> {
@@ -104,19 +102,20 @@ import no.hanne.xkcd.navigation.withParameters
                 onRandom = viewModel::random,
                 onNext = viewModel::next,
                 onLast = viewModel::last,
-                onSearch = { showSearchPopup = true }
+                onSearch = { showSearchPopup = true },
+                onFavourite = {
+                    navController?.navigate(Route.Favourites.destination)
+                }
             )
         }
 
-        viewModel.explainLink?.let {
-            AppRoundIconButton(
-                modifier = Modifier.align(Alignment.TopEnd),
-                borderColor = Color.Transparent,
-                icon = Rounded.Info
-            ) {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                ContextCompat.startActivity(context, browserIntent, null)
-            }
+        AppRoundIconButton(
+            modifier = Modifier.size(50.dp).align(Alignment.TopEnd),
+            icon = Icons.Rounded.Star,
+            tint = if (viewModel.isFavourite) GOLD else Color.Gray,
+            borderColor = Color.White,
+        ) {
+            viewModel.toggleFavourite()
         }
         PopUpDialog(
             visible = viewModel.notifyNewComic,
@@ -126,7 +125,6 @@ import no.hanne.xkcd.navigation.withParameters
                 text = stringResource(id = R.string.new_comic)
             )
         }
-
         PopUpDialog(
             modifier = Modifier
                 .align(Alignment.BottomStart),

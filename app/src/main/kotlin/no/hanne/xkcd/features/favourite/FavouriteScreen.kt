@@ -1,4 +1,4 @@
-package no.hanne.xkcd.features.search
+package no.hanne.xkcd.features.favourite
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,18 +18,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import no.hanne.xkcd.R
+import no.hanne.xkcd.R.string
 import no.hanne.xkcd.core.ui.components.ErrorDialog
+import no.hanne.xkcd.features.favourite.FavouriteViewEffect.NavigateBack
 import no.hanne.xkcd.features.home.ComicArea
-import no.hanne.xkcd.features.search.SearchViewEffect.NavigateBack
 
 @Composable
-fun SearchScreen(
+fun FavouriteScreen(
     navController: NavController?,
-    viewModel: SearchViewModel = hiltViewModel<SearchViewModelImpl>()
+    viewModel: FavouriteViewModel = hiltViewModel<FavouriteViewModelImpl>()
 ) {
     LaunchedEffect("view-effects") {
-        viewModel.viewEffect.collect { viewEffect: SearchViewEffect ->
+        viewModel.viewEffect.collect { viewEffect: FavouriteViewEffect ->
             when (viewEffect) {
                 is NavigateBack -> {
                     navController?.popBackStack()
@@ -59,7 +59,7 @@ fun SearchScreen(
                     LazyColumn() {
                         if (viewModel.result.isEmpty()) {
                             item {
-                                Text(stringResource(id = R.string.no_result))
+                                Text(stringResource(id = string.no_result))
                             }
                         }
                         items(viewModel.result) { comic ->

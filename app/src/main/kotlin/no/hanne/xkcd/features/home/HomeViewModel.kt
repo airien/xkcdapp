@@ -25,6 +25,7 @@ interface HomeViewModel : ViewModelBase<HomeViewEffect> {
     val isFirstEnabled: Boolean
     val comic: Comic?
     val isLoading: Boolean
+    val isFavourite: Boolean
     fun hideNotifyNewComic()
     fun previous()
     fun next()
@@ -32,6 +33,9 @@ interface HomeViewModel : ViewModelBase<HomeViewEffect> {
     fun last()
     fun random()
     fun onSearch(term: String)
+    fun setAsFavourite()
+    fun removeAsFavourite()
+    fun toggleFavourite()
 }
 
 @HiltViewModel
@@ -51,6 +55,7 @@ class HomeViewModelImpl @Inject constructor(
         get() = (comic?.num ?: 0) > 1
     override val isFirstEnabled: Boolean
         get() = (comic?.num ?: 0) > 1
+    override var isFavourite: Boolean by mutableStateOf(false)
     override var notifyNewComic: Boolean by mutableStateOf(false)
     override var explainLink: String? by mutableStateOf(null)
     override var comic: Comic? by mutableStateOf(null)
@@ -130,17 +135,52 @@ class HomeViewModelImpl @Inject constructor(
         sendViewEffect(HomeViewEffect.NavigateToSearch(term, latest?.num ?: 0))
     }
 
+    override fun setAsFavourite() {
+        comic?.let {
+            viewModelScope.launch {
+                datastoreRepository.storeFavourite(it.num)
+            }
+        }
+    }
+
+    override fun removeAsFavourite() {
+        comic?.let {
+            viewModelScope.launch {
+                datastoreRepository.removeFavourite(it.num)
+                isFavourite = false
+            }
+        }
+    }
+
+    override fun toggleFavourite() {
+        comic?.let {
+            if (isFavourite) removeAsFavourite()
+            else setAsFavourite()
+            isFavourite = true
+        }
+    }
+
     override fun onErrorDialogDismissed() {
         super.onErrorDialogDismissed()
         isLoading = false
     }
 
     private fun updateComic(it: Comic?) {
+        checkIsFavourite(it)
         comic = it
         it?.let { c ->
             explainLink = "${networkingConstants.explainUrl}${c.num}:_${
-                c.title?.replace(" ", "_")
+            c.title?.replace(" ", "_")
             }"
+        }
+    }
+
+    private fun checkIsFavourite(it: Comic?) {
+        it?.let { comic ->
+            viewModelScope.launch {
+                val favourites = datastoreRepository.getFavourites()
+                isFavourite = favourites.contains(comic.num)
+            }
         }
     }
 }
