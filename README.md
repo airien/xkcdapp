@@ -45,9 +45,9 @@ She set the deadline to 3 days from your first commit but understands there are 
 ## The end result
 Tadaaaaa here it is. Presenting the amazing XKCD App! :boom: :tada: :star2:
 
-<img src="images/screenshot1.jpgg" height="200">
+<img src="images/screenshot1.jpg" height="200">
 
-<img src="images/screenshot1.jpgg" height="200">
+<img src="images/screenshot1.jpg" height="200">
 
 Here is the apk
 [File](files/xkcd.apk)
