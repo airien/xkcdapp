@@ -53,7 +53,7 @@ Here is the apk
 ## The process
 I started by reading the requirements, writing them down in my understanding and thinking how to approach it.
 Next step was to draw some basic sketches on paper and go over some ideas for how it could look.
-I like using paper when thinking by myself, because I find it easier to draw things out and and think that way.
+I like using paper when thinking by myself, because I find it easier to draw things out and think that way.
 If sharing it with others, I would have used Gliffy and Jira. 
 For this with time constraints and it just being me doing the work, even if I am sharing it, it works on paper.
 Doesn't need to be pretty, just needs to get the thoughts going.
