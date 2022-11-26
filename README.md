@@ -48,7 +48,7 @@ If sharing it with others, I would have used Gliffy and Jira.
 For this with time constraints and it just being me doing the work, even if I am sharing it, it works on paper.
 Doesn't need to be pretty, just needs to get the thoughts going.
 
-![alt sketches](images/20221125_104142.jpg)
+![alt sketches](images/20221125_104122.jpg)
 
 Next step was to draw some basic architecture diagrams and think of how to build it structurally. 
 I decided to go for a multi module approach for maximum reuse and flexibility.
