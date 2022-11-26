@@ -8,15 +8,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
-import javax.inject.Singleton
-import no.hanne.xkcd.util.TickerFlower
 
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-    @Provides
-    @Singleton
-    fun provideTickerFlower(): TickerFlower = TickerFlower()
 
     @Provides
     fun provideApplicationContext(application: Application): Context? = application.applicationContext

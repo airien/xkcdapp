@@ -13,12 +13,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        debug {}
-        release {
-            isMinifyEnabled = false
-        }
-    }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -35,4 +29,5 @@ dependencies {
     implementation(projects.core.models)
     implementation(projects.core.text)
     implementation(libs.androidx.core)
+    implementation(libs.androidx.coroutines)
 }

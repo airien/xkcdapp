@@ -6,13 +6,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import no.hanne.xkcd.R
 
 @Composable
 fun ErrorDialog(
     dialogVisible: Boolean,
-    errorTitleText: String = stringResource(id = no.hanne.xkcd.core.text.R.string.error_dialog_title_ooops),
-    errorMessageText: String = stringResource(id = no.hanne.xkcd.core.text.R.string.general_error_message),
-    errorConfirmButtonText: String = stringResource(id = no.hanne.xkcd.core.text.R.string.error_dialog_button_ok),
+    errorTitleText: String = stringResource(id = R.string.error_dialog_title_ooops),
+    errorMessageText: String = stringResource(id = R.string.general_error_message),
+    errorConfirmButtonText: String = stringResource(id = R.string.error_dialog_button_ok),
     onDialogDismissed: () -> Unit
 ) {
     if (dialogVisible) {

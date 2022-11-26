@@ -1,4 +1,4 @@
-package no.hanne.xkcd.util
+package no.hanne.xkcd.core.util
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async

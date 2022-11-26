@@ -28,3 +28,11 @@ include(":core:ui")
 include(":core:util")
 include(":core:text")
 include(":core:exception")
+
+buildCache {
+    local {
+        isEnabled = true
+        directory = File(rootDir, "build-cache")
+        removeUnusedEntriesAfterDays = 30
+    }
+}

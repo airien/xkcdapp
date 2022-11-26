@@ -1,18 +1,20 @@
 package no.hanne.xkcd.modules
 
+import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.util.InternalAPI
+import javax.inject.Singleton
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import no.hanne.xkcd.BuildConfig
 import no.hanne.xkcd.core.models.network.NetworkingConstants
 import no.hanne.xkcd.core.network.KtorHttpClientUtil
 import no.hanne.xkcd.core.network.api.SearchApi
-import javax.inject.Singleton
+import no.hanne.xkcd.core.repository.NetworkRequestHandler
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -59,4 +61,12 @@ internal class NetworkingModule {
             typesenceUrlAppKey = BuildConfig.TYPESENSE_API_KEY
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideNetworkRequestHandler(
+        resources: Resources
+    ) = NetworkRequestHandler(
+        resources = resources
+    )
 }

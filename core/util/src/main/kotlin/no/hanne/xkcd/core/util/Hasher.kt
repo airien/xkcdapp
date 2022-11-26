@@ -1,4 +1,4 @@
-package no.hanne.xkcd.util
+package no.hanne.xkcd.core.util
 
 import java.security.MessageDigest
 

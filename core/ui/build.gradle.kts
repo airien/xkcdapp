@@ -13,12 +13,8 @@ android {
         targetSdk = 33
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
-    buildTypes {
-        debug {}
-        release {
-            isMinifyEnabled = false
-        }
+    buildFeatures {
+        compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.2"

@@ -5,12 +5,13 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.ContentScale.Companion
 import androidx.compose.ui.platform.LocalContext
 import coil.ImageLoader
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
-import coil.size.OriginalSize
 
 @Composable
 fun GifImage(
@@ -28,12 +29,10 @@ fun GifImage(
         }
         .build()
     Image(
-        painter = rememberImagePainter(
+        painter = rememberAsyncImagePainter(
             imageLoader = imageLoader,
-            data = image,
-            builder = {
-                size(OriginalSize)
-            }
+            model = image,
+            contentScale = ContentScale.FillBounds
         ),
         contentDescription = null,
         modifier = modifier

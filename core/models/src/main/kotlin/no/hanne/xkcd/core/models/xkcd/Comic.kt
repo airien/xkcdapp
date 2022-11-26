@@ -12,7 +12,7 @@ data class Comic(
     val month: String,
     val year: String,
     val title: String?,
-    val safeTitle: String,
+    val safeTitle: String?,
     val alt: String?,
     val img: String?,
     val link: String?,
@@ -46,7 +46,7 @@ data class DbComic(
     val month: String,
     val year: String,
     val title: String?,
-    val safeTitle: String,
+    val safeTitle: String?,
     val alt: String?,
     val img: String?,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)

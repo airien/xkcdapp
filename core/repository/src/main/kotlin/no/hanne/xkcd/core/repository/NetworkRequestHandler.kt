@@ -8,8 +8,7 @@ import no.hanne.xkcd.core.models.network.Result
 import no.hanne.xkcd.core.network.toResult
 
 class NetworkRequestHandler(
-    private val handleTokenRefresh: suspend () -> Unit,
-    private val resources: Resources,
+    private val resources: Resources
 ) {
 
     suspend fun <T> run(

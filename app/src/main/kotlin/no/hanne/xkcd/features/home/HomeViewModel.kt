@@ -5,13 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import no.hanne.xkcd.ViewModelBase
 import no.hanne.xkcd.ViewModelBaseImpl
+import no.hanne.xkcd.core.models.xkcd.Comic
 import no.hanne.xkcd.core.repository.ComicRepository
-import javax.inject.Inject
 
 interface HomeViewModel : ViewModelBase<HomeViewEffect> {
-    val message: String?
+    val comic: Comic?
     val isLoading: Boolean
 }
 
@@ -21,12 +22,13 @@ class HomeViewModelImpl @Inject constructor(
     private val comicRepository: ComicRepository
 ) : ViewModelBaseImpl<HomeViewEffect>(), HomeViewModel {
     private var clicked: Int = 0
-    override var message: String? by mutableStateOf(null)
-    override var isLoading: Boolean by mutableStateOf(false)
+    override var comic: Comic? by mutableStateOf(null)
+    override var isLoading: Boolean by mutableStateOf(true)
 
     init {
         runRequest({ comicRepository.getLatestComic() }) {
-            message = it.title
+            comic = it
+            isLoading = false
         }
     }
 

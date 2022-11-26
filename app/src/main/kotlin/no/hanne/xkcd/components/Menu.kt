@@ -94,13 +94,13 @@ fun PreviewMenu() {
         Menu(
             listOf<MenuItem>(
                 NavigationTarget(
-                    textRes = no.hanne.xkcd.core.text.R.string.teststr,
+                    textRes = R.string.teststr,
                     route = "test2",
                     iconRes = R.drawable.ic_launcher_background
                 ),
 
                 NavigationTarget(
-                    textRes = no.hanne.xkcd.core.text.R.string.teststr,
+                    textRes = R.string.teststr,
                     route = "test1",
                     iconRes = R.drawable.ic_launcher_foreground
                 )

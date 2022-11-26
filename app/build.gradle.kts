@@ -132,6 +132,6 @@ dependencies {
     implementation(libs.dagger.hilt.core)
     implementation(libs.timber)
     implementation(libs.jetpack.room.ktx)
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.5.2")
+    implementation(libs.androidx.coroutines)
     kapt(libs.dagger.hilt.compiler)
 }

@@ -34,7 +34,7 @@ abstract class ViewModelBaseImpl<T> : ViewModelBase<T>, ViewModel() {
         // We don't want to show user a tech error. So, log it and show very generic message.
         // Timber will in production builds send error to crashlytics automatically
         Timber.e(error)
-        errorMessage = resources.getString(no.hanne.xkcd.core.text.R.string.general_error_message)
+        errorMessage = resources.getString(R.string.general_error_message)
     }
     protected fun sendViewEffect(effect: T) {
         viewModelScope.launch {

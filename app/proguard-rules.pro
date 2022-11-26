@@ -19,3 +19,38 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception  # Keep custom exceptions.
+
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt
+
+# native Kotlin classes
+-keepclassmembers class kotlinx.serialization.json.** {
+    *** Companion;
+}
+
+-keepclasseswithmembers class kotlinx.serialization.json.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Mentra Companion android
+-keep,includedescriptorclasses class com.mentra.companion.android.**$$serializer { *; }
+-keepclassmembers class com.mentra.companion.android.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.mentra.companion.android.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Models
+-keep,includedescriptorclasses class com.mentra.models.**$$serializer { *; }
+-keepclassmembers class com.mentra.models.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.mentra.models.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+-keepattributes InnerClasses
