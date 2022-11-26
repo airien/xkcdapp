@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name" translatable="false">XKCD</string>
     <string name="posted">Comic was posted on</string>
+    <string name="search">Search</string>
+    <string name="no_result">We could not find any comics....\nPlease try again!</string>
 </resources>

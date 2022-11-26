@@ -9,19 +9,26 @@ data class SearchResult(
 
 @Serializable
 data class FoundObjects(
-    val found: Int,
-    val outOf: Int,
-    val page: Int,
-    val hits: List<ComicSearchResult>
+    val found: Int?,
+    val outOf: Int?,
+    val page: Int?,
+    val hits: List<Document>?,
+    val code: String?,
+    val error: String?
+)
+
+@Serializable
+data class Document(
+    val document: ComicSearchResult
 )
 
 @Serializable
 data class ComicSearchResult(
-    val id: Int,
-    val publishDateDay: Int,
-    val publishDateMonth: Int,
-    val publishDateYear: Int,
-    val publishDateTimestamp: Long,
+    val id: String?,
+    val publishDateDay: Int?,
+    val publishDateMonth: Int?,
+    val publishDateYear: Int?,
+    val publishDateTimestamp: Long?,
     val altTitle: String?,
     val title: String?,
     val transcript: String?,
@@ -29,7 +36,7 @@ data class ComicSearchResult(
 ) {
     fun toComic(): Comic {
         return Comic(
-            num = id,
+            num = id?.toIntOrNull() ?: 0,
             day = publishDateDay.toString(),
             month = publishDateMonth.toString(),
             year = publishDateYear.toString(),

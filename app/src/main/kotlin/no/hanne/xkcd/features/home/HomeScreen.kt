@@ -25,6 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import no.hanne.xkcd.core.ui.components.AppRoundIconButton
 import no.hanne.xkcd.core.ui.components.ErrorDialog
+import no.hanne.xkcd.navigation.Route
+import no.hanne.xkcd.navigation.withParameters
 
 @Composable fun HomeScreen(
     navController: NavController?,
@@ -34,11 +36,15 @@ import no.hanne.xkcd.core.ui.components.ErrorDialog
     val context = LocalContext.current
     LaunchedEffect("view-effects") {
         viewModel.viewEffect.collect { viewEffect: HomeViewEffect ->
-           /* when (viewEffect) {
-                is HomeViewEffect.NavigateToLogin -> {
-                    navController?.navigate(Route.Login.destination)
+            when (viewEffect) {
+                is HomeViewEffect.NavigateToSearch -> {
+                    navController?.navigate(
+                        Route.Search.withParameters(
+                            listOf(viewEffect.term, viewEffect.latest)
+                        )
+                    )
                 }
-            }*/
+            }
         }
     }
     ErrorDialog(
@@ -71,9 +77,15 @@ import no.hanne.xkcd.core.ui.components.ErrorDialog
                     )
                 }
                 true -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.CenterHorizontally).weight(1f)
+                    )
                 }
             }
+            SearchControl(
+                Modifier.fillMaxWidth().padding(vertical = 5.dp, horizontal = 16.dp),
+                onSearch = viewModel::onSearch
+            )
             ControlsArea(
                 modifier = Modifier.fillMaxWidth(),
                 isFirstEnabled = viewModel.isFirstEnabled,

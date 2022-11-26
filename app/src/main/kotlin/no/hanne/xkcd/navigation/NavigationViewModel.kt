@@ -5,12 +5,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import no.hanne.xkcd.R.drawable
 import no.hanne.xkcd.ViewModelBase
 import no.hanne.xkcd.ViewModelBaseImpl
 import no.hanne.xkcd.core.ui.components.NavigationTarget
 import no.hanne.xkcd.navigation.Route.Home
 import javax.inject.Inject
-import no.hanne.xkcd.R.drawable
 
 interface NavigationViewModel : ViewModelBase<NavigationViewEffect> {
     val menuItems: List<NavigationTarget>
@@ -43,5 +43,4 @@ class NavigationViewModelImpl @Inject constructor(
 sealed class NavigationViewEffect {
     data class NavigateToDeeplink(val route: String) : NavigationViewEffect()
     data class NavigateToRoute(val route: String) : NavigationViewEffect()
-    object NavigateToLogin : NavigationViewEffect()
 }

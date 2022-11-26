@@ -28,6 +28,7 @@ interface HomeViewModel : ViewModelBase<HomeViewEffect> {
     fun first()
     fun last()
     fun random()
+    fun onSearch(term: String)
 }
 
 @HiltViewModel
@@ -119,9 +120,15 @@ class HomeViewModelImpl @Inject constructor(
         }
     }
 
+    override fun onSearch(term: String) {
+        sendViewEffect(HomeViewEffect.NavigateToSearch(term, latest?.num ?: 0))
+    }
+
     override fun onErrorDialogDismissed() {
         super.onErrorDialogDismissed()
         isLoading = false
     }
 }
-sealed class HomeViewEffect
+sealed class HomeViewEffect {
+    data class NavigateToSearch(val term: String, val latest: Int) : HomeViewEffect()
+}

@@ -3,14 +3,8 @@ package no.hanne.xkcd.navigation
 enum class Route(val destination: String, val parameter: String? = null) {
     Home("/home"),
     Login("/profile"),
-    Settings("/settings"),
-    Artist("/artist"),
-    Artists("/artists"),
+    Search("search/"),
     Splash("/splash"),
-    AddArtist("/artist/add"),
-    Items("/items"),
-    Item("/item"),
-    AddItem("/items/add"),
 }
 fun Route.withParameters(values: List<Any?>): String {
     return this.destination.plus(values.joinToString(separator = "/"))

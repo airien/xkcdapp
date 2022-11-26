@@ -9,6 +9,6 @@ data class NetworkingConstants(
     val versionName: String = "1.0",
     val xkcdUrl: String = "https://xkcd.com/",
     val explainUrl: String = "https://www.explainxkcd.com/wiki/index.php/",
-    val typesenceUrl: String = "https://qtg5aekc2iosjh93p.a1.typesense.net/multi_search?use-cache=true",
+    val typesenceUrl: String = "https://qtg5aekc2iosjh93p.a1.typesense.net/multi_search?use_cache=true",
     val typesenceUrlAppKey: String? = "replaceMe/"
 )

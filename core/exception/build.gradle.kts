@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    kotlin("plugin.serialization")
     id("org.jetbrains.kotlin.android")
 }
 
@@ -41,4 +42,5 @@ dependencies {
     implementation(platform(libs.arrow.bom))
     implementation(libs.arrow.core)
     implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.kotlinx.serialization.json)
 }

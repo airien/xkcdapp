@@ -67,7 +67,7 @@ android {
             buildConfigField(boolean, "ENABLE_LOGGING", trueValue)
             buildConfigField("String", "XKCD_JSON_URL", "\"https://xkcd.com/\"")
             buildConfigField("String", "XKCD_EXPLAIN_URL", "\"https://www.explainxkcd.com/wiki/index.php/\"")
-            buildConfigField("String", "TYPESENSE_URL", "\"https://qtg5aekc2iosjh93p.a1.typesense.net/multi_search\"")
+            buildConfigField("String", "TYPESENSE_URL", "\"https://qtg5aekc2iosjh93p.a1.typesense.net/multi_search?use_cache=true\"")
             buildConfigField("String", "TYPESENSE_API_KEY", "\"8hLCPSQTYcBuK29zY5q6Xhin7ONxHy99\"")
         }
 
@@ -76,7 +76,7 @@ android {
             buildConfigField(boolean, "ENABLE_LOGGING", trueValue)
             buildConfigField("String", "XKCD_JSON_URL", "\"https://xkcd.com/\"")
             buildConfigField("String", "XKCD_EXPLAIN_URL", "\"https://www.explainxkcd.com/wiki/index.php/\"")
-            buildConfigField("String", "TYPESENSE_URL", "\"https://qtg5aekc2iosjh93p.a1.typesense.net/multi_search\"")
+            buildConfigField("String", "TYPESENSE_URL", "\"https://qtg5aekc2iosjh93p.a1.typesense.net/multi_search?use_cache=true\"")
             buildConfigField("String", "TYPESENSE_API_KEY", "\"8hLCPSQTYcBuK29zY5q6Xhin7ONxHy99\"")
         }
     }
@@ -103,6 +103,7 @@ android {
 }
 
 dependencies {
+    testImplementation("junit:junit:4.12")
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
     implementation(projects.core.models)
     implementation(projects.core.network)
