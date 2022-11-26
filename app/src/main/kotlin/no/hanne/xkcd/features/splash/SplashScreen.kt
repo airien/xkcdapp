@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import no.hanne.xkcd.components.Animation
+import no.hanne.xkcd.core.ui.components.Animation
 import no.hanne.xkcd.features.splash.SplashViewEffect.NavigateToHome
 import no.hanne.xkcd.navigation.Route
 

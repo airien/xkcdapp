@@ -1,4 +1,4 @@
-package no.hanne.xkcd.components
+package no.hanne.xkcd.core.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility

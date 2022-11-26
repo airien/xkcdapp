@@ -3,11 +3,11 @@ package no.hanne.xkcd.core.network.api
 import arrow.core.Either
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
-import javax.inject.Inject
 import no.hanne.xkcd.core.exception.DataSourceException
 import no.hanne.xkcd.core.exception.DataSourceResult
 import no.hanne.xkcd.core.models.network.NetworkingConstants
 import no.hanne.xkcd.core.models.xkcd.Comic
+import javax.inject.Inject
 
 class XkcdApi @Inject constructor(
     private val httpClient: HttpClient,

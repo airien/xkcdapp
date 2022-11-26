@@ -44,6 +44,7 @@ dependencies {
     implementation(platform(libs.arrow.bom))
     implementation(libs.arrow.core)
     implementation(libs.ktor.core)
+    implementation(libs.androidx.datastore)
 
     testImplementation(libs.kotlin.stdLib)
     testImplementation(libs.ktor.client.serialization)

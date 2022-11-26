@@ -7,8 +7,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import no.hanne.xkcd.R
-import no.hanne.xkcd.components.ErrorDialog
+import no.hanne.xkcd.R.string
+import no.hanne.xkcd.core.ui.components.ErrorDialog
 import no.hanne.xkcd.features.home.HomeScreen
 import no.hanne.xkcd.features.splash.SplashScreen
 import no.hanne.xkcd.navigation.NavigationViewEffect.NavigateToDeeplink
@@ -39,7 +39,7 @@ fun Navigation(
         }
     }
     ErrorDialog(
-        errorTitleText = stringResource(id = R.string.error_dialog_title_ooops),
+        errorTitleText = stringResource(id = string.error_dialog_title_ooops),
         errorMessageText = viewModel.errorMessage ?: "",
         dialogVisible = viewModel.errorMessage?.isNotEmpty() == true,
         onDialogDismissed = {

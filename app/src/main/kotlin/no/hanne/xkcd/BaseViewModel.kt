@@ -7,14 +7,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import no.hanne.xkcd.core.exception.RepositoryException
 import no.hanne.xkcd.core.models.network.Result
+import no.hanne.xkcd.core.network.Requester
 import timber.log.Timber
 
 interface ViewModelBase<T> {
@@ -29,7 +30,12 @@ abstract class ViewModelBaseImpl<T> : ViewModelBase<T>, ViewModel() {
     override var errorMessage: String? by mutableStateOf(null)
         protected set
     protected abstract val resources: Resources
-
+    private val requester: Requester = Requester(
+        scope = viewModelScope,
+        onHandleError = {
+            handleError(it)
+        }
+    )
     protected open fun handleError(error: Throwable?) {
         // We don't want to show user a tech error. So, log it and show very generic message.
         // Timber will in production builds send error to crashlytics automatically
@@ -42,42 +48,30 @@ abstract class ViewModelBaseImpl<T> : ViewModelBase<T>, ViewModel() {
         }
     }
 
-    protected fun <T> runRequest(
-        onRunCall: suspend () -> Result<Throwable, T>,
+    fun <R> runRequest(
+        onRunCall: suspend () -> Result<RepositoryException, R>,
         onError: (Throwable?) -> Unit = {},
         scope: CoroutineScope = viewModelScope,
-        onGotValue: (value: T) -> Unit = {}
+        onGotValue: (value: R) -> Unit = {}
     ): Job {
-        return makeRequest(
-            scope,
-            onRunCall,
-            {
-                handleError(it)
-                onError(it)
-            },
-            onGotValue
+        return requester.runRequest(
+            onRunCall = onRunCall,
+            onError = onError,
+            scope = scope,
+            onGotValue = onGotValue
         )
     }
-    fun <T> makeRequest(
-        scope: CoroutineScope,
-        onRunCall: suspend () -> Result<Throwable, T>,
-        handleError: (value: Throwable?) -> Unit = {},
-        onGotValue: (value: T) -> Unit = {},
-    ): Job {
-        return scope.launch(Dispatchers.IO) {
-            when (val result = onRunCall()) {
-                is Result.Success<T> -> {
-                    withContext(Dispatchers.Main) {
-                        onGotValue(result.value)
-                    }
-                }
-                is Result.Failure -> {
-                    withContext(Dispatchers.Main) {
-                        handleError(result.error)
-                    }
-                }
-            }
-        }
+
+    fun <T> runRequestAsync(
+        onRunCall: suspend () -> Result<RepositoryException, T>,
+        onError: (Throwable?) -> Unit = {},
+        scope: CoroutineScope = viewModelScope
+    ): Deferred<T?> {
+        return requester.runRequestAsync(
+            onRunCall = onRunCall,
+            onError = onError,
+            scope = scope
+        )
     }
 
     override fun onErrorDialogDismissed() {

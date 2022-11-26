@@ -1,4 +1,4 @@
-package no.hanne.xkcd.components
+package no.hanne.xkcd.core.ui.components
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
@@ -6,7 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import no.hanne.xkcd.R
+import no.hanne.xkcd.core.ui.R
 
 @Composable
 fun ErrorDialog(

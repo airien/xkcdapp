@@ -122,8 +122,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.toolingpreview)
     implementation(libs.androidx.activity)
     implementation(libs.accompanist.flowlayout)
-    implementation(libs.lottie.compose)
-    implementation(libs.airbnb.android.lottie)
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.coil.compose)

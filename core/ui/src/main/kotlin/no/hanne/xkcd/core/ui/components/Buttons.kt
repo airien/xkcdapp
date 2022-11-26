@@ -1,4 +1,4 @@
-package no.hanne.xkcd.components
+package no.hanne.xkcd.core.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
@@ -41,18 +41,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import no.hanne.xkcd.R
+import no.hanne.xkcd.core.ui.R
 import no.hanne.xkcd.core.ui.theme.BodyText
 import no.hanne.xkcd.core.ui.theme.SemiTransparentLight
 import no.hanne.xkcd.core.ui.theme.XKCDAppTheme
 
-object BackstageAppButtonDefaults {
+object AppButtonDefaults {
     val MinWidth = 78.dp
     val MinHeight = 52.dp
 }
 
 @Composable
-fun BackstageAppButton(
+fun AppButton(
     text: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -64,8 +64,8 @@ fun BackstageAppButton(
         shape = RoundedCornerShape(percent = 35),
         enabled = enabled,
         modifier = modifier
-            .heightIn(min = BackstageAppButtonDefaults.MinHeight)
-            .widthIn(min = BackstageAppButtonDefaults.MinWidth)
+            .heightIn(min = AppButtonDefaults.MinHeight)
+            .widthIn(min = AppButtonDefaults.MinWidth)
     ) {
         if (loading) {
             CircularProgressIndicator(
@@ -93,7 +93,7 @@ fun BackstageAppButton(
 }
 
 @Composable
-fun BackstageAppTextButton(
+fun AppTextButton(
     modifier: Modifier = Modifier,
     text: String = "",
     labelModifier: Modifier = Modifier,
@@ -110,8 +110,8 @@ fun BackstageAppTextButton(
             backgroundColor = backgroundColor
         ),
         modifier = modifier
-            .heightIn(min = BackstageAppButtonDefaults.MinHeight)
-            .widthIn(min = BackstageAppButtonDefaults.MinWidth),
+            .heightIn(min = AppButtonDefaults.MinHeight)
+            .widthIn(min = AppButtonDefaults.MinWidth),
         enabled = enabled,
         onClick = onClick,
         shape = shape
@@ -126,7 +126,7 @@ fun BackstageAppTextButton(
 }
 
 @Composable
-fun BackstageAppRowContentButton(
+fun AppRowContentButton(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
     enabled: Boolean = true,
@@ -142,8 +142,8 @@ fun BackstageAppRowContentButton(
             backgroundColor = backgroundColor
         ),
         modifier = modifier
-            .heightIn(min = BackstageAppButtonDefaults.MinHeight)
-            .widthIn(min = BackstageAppButtonDefaults.MinWidth),
+            .heightIn(min = AppButtonDefaults.MinHeight)
+            .widthIn(min = AppButtonDefaults.MinWidth),
         enabled = enabled,
         onClick = onClick,
         shape = shape,
@@ -154,7 +154,7 @@ fun BackstageAppRowContentButton(
 }
 
 @Composable
-fun BackstageAppIconTextButton(
+fun AppIconTextButton(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int,
     text: String = "",
@@ -180,8 +180,8 @@ fun BackstageAppIconTextButton(
         shape = shape,
         enabled = enabled,
         modifier = modifier
-            .heightIn(min = BackstageAppButtonDefaults.MinHeight)
-            .widthIn(min = BackstageAppButtonDefaults.MinWidth)
+            .heightIn(min = AppButtonDefaults.MinHeight)
+            .widthIn(min = AppButtonDefaults.MinWidth)
     ) {
         if (loading) {
             CircularProgressIndicator(
@@ -218,37 +218,37 @@ fun BackstageAppIconTextButton(
 
 @Preview(backgroundColor = 0xFFFFFF)
 @Composable
-fun BackstageAppIconTextButtonPreview() {
+fun AppIconTextButtonPreview() {
     XKCDAppTheme() {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            BackstageAppIconTextButton(text = "Filter", icon = R.drawable.giphy, onClick = { })
+            AppIconTextButton(text = "Filter", icon = R.drawable.giphy, onClick = { })
         }
     }
 }
 
 @Preview(backgroundColor = 0xFFFFFF)
 @Composable
-fun BackstageAppButtonPreview() {
+fun AppButtonPreview() {
     XKCDAppTheme {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            BackstageAppButton(text = "Enabled", onClick = {})
+            AppButton(text = "Enabled", onClick = {})
 
-            BackstageAppButton(text = "Disabled", onClick = {}, enabled = false)
+            AppButton(text = "Disabled", onClick = {}, enabled = false)
 
-            BackstageAppButton(text = "Loading", onClick = {}, loading = true)
+            AppButton(text = "Loading", onClick = {}, loading = true)
         }
     }
 }
 
 @Preview(backgroundColor = 0xFFFFFF)
 @Composable
-fun BackstageAppTextButtonPreview() {
+fun AppTextButtonPreview() {
     XKCDAppTheme {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            BackstageAppTextButton(text = "Enabled", onClick = {})
+            AppTextButton(text = "Enabled", onClick = {})
 
-            BackstageAppTextButton(text = "Disabled", enabled = false, onClick = {})
-            BackstageAppTextButton(
+            AppTextButton(text = "Disabled", enabled = false, onClick = {})
+            AppTextButton(
                 text = "Start",
                 enabled = false,
                 onClick = {},
@@ -261,7 +261,7 @@ fun BackstageAppTextButtonPreview() {
 }
 
 @Composable
-fun BackstageAppContentButton(
+fun AppContentButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     loading: Boolean = false,
@@ -273,8 +273,8 @@ fun BackstageAppContentButton(
         shape = RoundedCornerShape(percent = 35),
         enabled = enabled,
         modifier = modifier
-            .heightIn(min = BackstageAppButtonDefaults.MinHeight)
-            .widthIn(min = BackstageAppButtonDefaults.MinWidth)
+            .heightIn(min = AppButtonDefaults.MinHeight)
+            .widthIn(min = AppButtonDefaults.MinWidth)
     ) {
         if (loading) {
             CircularProgressIndicator(

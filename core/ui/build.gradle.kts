@@ -32,9 +32,17 @@ android {
 
 dependencies {
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
+    implementation(projects.core.text)
     implementation(libs.androidx.core)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.toolingpreview)
+    implementation(libs.lottie.compose)
+    implementation(libs.airbnb.android.lottie)
+    implementation(libs.coil.landscapist)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
 }

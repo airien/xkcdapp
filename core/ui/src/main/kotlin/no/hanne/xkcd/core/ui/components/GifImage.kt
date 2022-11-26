@@ -1,4 +1,4 @@
-package no.hanne.xkcd.components
+package no.hanne.xkcd.core.ui.components
 
 import android.os.Build
 import androidx.annotation.DrawableRes

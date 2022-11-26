@@ -5,12 +5,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dagger.hilt.android.lifecycle.HiltViewModel
-import no.hanne.xkcd.R
 import no.hanne.xkcd.ViewModelBase
 import no.hanne.xkcd.ViewModelBaseImpl
-import no.hanne.xkcd.components.NavigationTarget
+import no.hanne.xkcd.core.ui.components.NavigationTarget
 import no.hanne.xkcd.navigation.Route.Home
 import javax.inject.Inject
+import no.hanne.xkcd.R.drawable
 
 interface NavigationViewModel : ViewModelBase<NavigationViewEffect> {
     val menuItems: List<NavigationTarget>
@@ -27,7 +27,7 @@ class NavigationViewModelImpl @Inject constructor(
         listOf(
             NavigationTarget(
                 route = Home.destination,
-                iconRes = R.drawable.hppy_unicorn
+                iconRes = drawable.hppy_unicorn
             )
         )
     )
