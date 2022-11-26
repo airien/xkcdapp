@@ -2,7 +2,6 @@ package no.hanne.xkcd.features.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons.Rounded
 import androidx.compose.material.icons.rounded.FastForward
 import androidx.compose.material.icons.rounded.FastRewind
@@ -16,6 +15,7 @@ import no.hanne.xkcd.core.ui.components.AppRoundIconButton
 
 @Composable
 fun ControlsArea(
+    modifier: Modifier = Modifier,
     isFirstEnabled: Boolean,
     isPreviousEnabled: Boolean,
     isNextEnabled: Boolean,
@@ -27,7 +27,7 @@ fun ControlsArea(
     onLast: () -> Unit
 ) {
     Row(
-        Modifier.fillMaxWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         AppRoundIconButton(

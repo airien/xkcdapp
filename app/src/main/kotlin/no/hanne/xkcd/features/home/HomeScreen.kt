@@ -1,13 +1,15 @@
 package no.hanne.xkcd.features.home
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -46,13 +48,30 @@ import no.hanne.xkcd.core.ui.components.ErrorDialog
     ) {
         Column(
             Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-            ComicArea(viewModel.comic, viewModel.isLoading)
-            Spacer(Modifier.weight(1f))
+            Crossfade(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxWidth()
+                    .weight(1f),
+                targetState = viewModel.isLoading
+            ) {
+                when (it) {
+                    false -> {
+                        ComicArea(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                            comic = viewModel.comic
+                        )
+                    }
+                    true -> {
+                        CircularProgressIndicator()
+                    }
+                }
+            }
             ControlsArea(
+                modifier = Modifier.fillMaxWidth(),
                 isFirstEnabled = viewModel.isFirstEnabled,
                 isPreviousEnabled = viewModel.isPreviousEnabled,
                 isNextEnabled = viewModel.isNextEnabled,
