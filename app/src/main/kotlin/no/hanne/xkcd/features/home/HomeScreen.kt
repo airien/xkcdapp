@@ -12,7 +12,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.Stars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,15 +26,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import com.google.accompanist.flowlayout.FlowRow
 import no.hanne.xkcd.R
 import no.hanne.xkcd.core.ui.components.AppRoundIconButton
 import no.hanne.xkcd.core.ui.components.ErrorDialog
 import no.hanne.xkcd.core.ui.components.PopUpDialog
 import no.hanne.xkcd.core.ui.theme.GOLD
+import no.hanne.xkcd.core.util.ShareUtils
 import no.hanne.xkcd.navigation.Route
 import no.hanne.xkcd.navigation.withParameters
 
@@ -39,7 +48,10 @@ import no.hanne.xkcd.navigation.withParameters
     viewModel: HomeViewModel =
         hiltViewModel<HomeViewModelImpl>()
 ) {
+    val context = LocalContext.current
     var showSearchPopup by remember { mutableStateOf(false) }
+    var showMorePopup by remember { mutableStateOf(false) }
+
     LaunchedEffect("view-effects") {
         viewModel.viewEffect.collect { viewEffect: HomeViewEffect ->
             when (viewEffect) {
@@ -99,13 +111,9 @@ import no.hanne.xkcd.navigation.withParameters
                 isLastEnabled = viewModel.isLastEnabled,
                 onFirst = viewModel::first,
                 onPrevious = viewModel::previous,
-                onRandom = viewModel::random,
                 onNext = viewModel::next,
                 onLast = viewModel::last,
-                onSearch = { showSearchPopup = true },
-                onFavourite = {
-                    navController?.navigate(Route.Favourites.destination)
-                }
+                onMore = { showMorePopup = true }
             )
         }
 
@@ -113,26 +121,22 @@ import no.hanne.xkcd.navigation.withParameters
             modifier = Modifier.size(50.dp).align(Alignment.TopEnd),
             icon = Icons.Rounded.Star,
             tint = if (viewModel.isFavourite) GOLD else Color.Gray,
-            borderColor = Color.White,
+            borderColor = Color.Transparent
         ) {
             viewModel.toggleFavourite()
         }
         PopUpDialog(
-            visible = viewModel.notifyNewComic,
-            hideDialog = viewModel::hideNotifyNewComic
-        ) {
-            Text(
-                text = stringResource(id = R.string.new_comic)
-            )
-        }
-        PopUpDialog(
             modifier = Modifier
                 .align(Alignment.BottomStart),
+            showBackdrop = false,
             visible = viewModel.notifyNewComic,
             hideDialog = viewModel::hideNotifyNewComic
         ) {
             Text(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .padding(bottom = 32.dp),
                 text = stringResource(id = R.string.new_comic)
             )
         }
@@ -140,13 +144,59 @@ import no.hanne.xkcd.navigation.withParameters
         PopUpDialog(
             modifier = Modifier
                 .align(Alignment.BottomStart),
+            visible = showMorePopup,
+            showBackdrop = false,
+            hideDialog = { showMorePopup = false }
+        ) {
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .padding(bottom = 32.dp),
+                crossAxisSpacing = 16.dp,
+                mainAxisSpacing = 16.dp,
+                crossAxisAlignment = FlowCrossAxisAlignment.Center,
+                mainAxisAlignment = FlowMainAxisAlignment.Center
+            ) {
+                AppRoundIconButton(
+                    icon = Icons.Rounded.Shuffle
+                ) {
+                    viewModel.random()
+                }
+                AppRoundIconButton(
+                    icon = Icons.Rounded.Stars
+                ) {
+                    navController?.navigate(Route.Favourites.destination)
+                }
+                AppRoundIconButton(
+                    icon = Icons.Rounded.Search
+                ) {
+                    showSearchPopup = true
+                }
+
+                AppRoundIconButton(
+                    icon = Icons.Rounded.Share
+                ) {
+                    ShareUtils.shareLinkToOthers(
+                        context = context,
+                        text = "https://xkcd.com/${viewModel.comic?.num}",
+                        title = viewModel?.comic?.title ?: "XKCD Comic"
+                    )
+                }
+            }
+        }
+        PopUpDialog(
+            modifier = Modifier
+                .align(Alignment.BottomStart),
+            showBackdrop = false,
             visible = showSearchPopup,
             hideDialog = { showSearchPopup = false }
         ) {
             SearchControl(
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .padding(bottom = 32.dp),
                 onSearch = viewModel::onSearch
             )
         }

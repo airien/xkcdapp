@@ -1,4 +1,4 @@
-package no.hanne.xkcd.core.ui.components
+package no.hanne.xkcd.core.ui.components // ktlint-disable filename
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
@@ -38,11 +38,11 @@ import kotlin.math.roundToInt
 
 @SuppressLint("UnusedTransitionTargetStateParameter")
 @Suppress("UnusedPrivateMember")
-// will use it when implementing chromecast
 @Composable
 fun PopUpDialog(
     modifier: Modifier = Modifier,
     visible: Boolean,
+    showBackdrop: Boolean = true,
     background: Color = MaterialTheme.colors.background,
     shape: Shape = RoundedCornerShape(percent = 5),
     hideDialog: () -> Unit = {},
@@ -62,7 +62,7 @@ fun PopUpDialog(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(SemiTransparentDark)
+                .background(if (showBackdrop) SemiTransparentDark else Color.Transparent)
                 .clickable { hideDialog() }
         )
     }
@@ -114,49 +114,6 @@ fun PopUpDialog(
                         .height(4.dp)
                 ) {}
                 content()
-            }
-        }
-    }
-}
-
-@SuppressLint("UnusedTransitionTargetStateParameter")
-@Suppress("UnusedPrivateMember")
-@Composable
-fun PopDownDialog(
-    modifier: Modifier = Modifier,
-    visible: Boolean,
-    showTag: Boolean = true,
-    background: Color = MaterialTheme.colors.background,
-    shape: Shape = RoundedCornerShape(percent = 5),
-    content: @Composable () -> Unit = {}
-) {
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = visible
-    ) {
-        Card(
-            backgroundColor = background,
-            elevation = 8.dp,
-            shape = shape
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .background(Color.Transparent)
-            ) {
-                Spacer(modifier = Modifier.height(8.dp))
-                content()
-                Spacer(modifier = Modifier.height(8.dp))
-                if (showTag) {
-                    Card(
-                        backgroundColor = Gray600,
-                        elevation = 8.dp,
-                        shape = RoundedCornerShape(percent = 50),
-                        modifier = Modifier
-                            .width(30.dp)
-                            .height(4.dp)
-                    ) {}
-                }
             }
         }
     }

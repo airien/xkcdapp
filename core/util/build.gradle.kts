@@ -30,4 +30,5 @@ dependencies {
     implementation(projects.core.text)
     implementation(libs.androidx.core)
     implementation(libs.androidx.coroutines)
+    implementation(libs.timber)
 }

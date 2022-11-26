@@ -111,6 +111,7 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.exception)
     implementation(projects.core.ui)
+    implementation(projects.core.util)
     implementation(libs.ktor.core)
     implementation(libs.ktor.client.serialization)
     implementation(platform(libs.arrow.bom))
