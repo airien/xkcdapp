@@ -2,7 +2,6 @@ package no.hanne.xkcd.features.home
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -61,23 +59,19 @@ import no.hanne.xkcd.core.ui.components.ErrorDialog
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-            Crossfade(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .fillMaxWidth()
-                    .weight(1f),
-                targetState = viewModel.isLoading
-            ) {
-                when (it) {
-                    false -> {
-                        ComicArea(
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-                            comic = viewModel.comic,
-                        )
-                    }
-                    true -> {
-                        CircularProgressIndicator()
-                    }
+            when (viewModel.isLoading) {
+                false -> {
+                    ComicArea(
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .padding(vertical = 16.dp),
+                        comic = viewModel.comic
+                    )
+                }
+                true -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
             }
             ControlsArea(
