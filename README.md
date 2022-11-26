@@ -32,6 +32,7 @@ Given the amount of work, the client has agreed to an [MVP](https://en.wikipedia
 
 This is where you come in! :tada:
 
+
 Your task is to pick a few features you think are best suited for an MVP. The tech stack is completely up to you - use whichever language you're most comfortable with (we :heart: Kotlin and Swift) and any third party libraries and tools you need to get the job done. Considering this is the MVP, your code should be architectured in a way that makes it easy to add and extend features.
 
 Also, the client doesn't have a budget for a designer. She doesn't expect anything fancy, but she trusts you to come up with something reasonable.
@@ -39,6 +40,12 @@ Also, the client doesn't have a budget for a designer. She doesn't expect anythi
 She set the deadline to 3 days from your first commit but understands there are other things besides work. A quick note in a README file explaining the delay does the trick. For example:
 
 > Ran over the time limit as birthday celebrations for auntie Linda had to be had. :beer:
+
+
+## The end result
+Tadaaaaa here it is. Presenting the amazing XKCD App! :boom: :tada: :star2:
+![alt screenshots](images/screenshot1.jpg)
+![alt screenshots](images/screenshot2.jpg)
 
 ## The process
 I started by reading the requirements, writing them down in my understanding and thinking how to approach it.
