@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons.Rounded
 import androidx.compose.material.icons.rounded.FastForward
 import androidx.compose.material.icons.rounded.FastRewind
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
@@ -24,7 +25,8 @@ fun ControlsArea(
     onPrevious: () -> Unit,
     onRandom: () -> Unit,
     onNext: () -> Unit,
-    onLast: () -> Unit
+    onLast: () -> Unit,
+    onSearch: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -48,6 +50,11 @@ fun ControlsArea(
             icon = Rounded.Shuffle
         ) {
             onRandom()
+        }
+        AppRoundIconButton(
+            icon = Rounded.Search
+        ) {
+            onSearch()
         }
         AppRoundIconButton(
             icon = Rounded.FastForward,

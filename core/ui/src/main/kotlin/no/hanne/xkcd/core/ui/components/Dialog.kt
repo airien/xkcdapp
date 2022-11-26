@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,9 +29,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import no.hanne.xkcd.core.ui.theme.Gray600
 import no.hanne.xkcd.core.ui.theme.SemiTransparentDark
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 @SuppressLint("UnusedTransitionTargetStateParameter")
 @Suppress("UnusedPrivateMember")
@@ -45,6 +50,14 @@ fun PopUpDialog(
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val travelled = remember { mutableStateOf(0f) }
+    LaunchedEffect(
+        key1 = visible,
+        block = {
+            if (visible) {
+                travelled.value = 0f
+            }
+        }
+    )
     if (visible) {
         Box(
             modifier = Modifier
@@ -55,6 +68,14 @@ fun PopUpDialog(
     }
     AnimatedVisibility(
         modifier = modifier
+            .offset(
+                offset = {
+                    IntOffset(
+                        x = 0,
+                        y = max(0, travelled.value.roundToInt())
+                    )
+                }
+            )
             .pointerInput(Unit) {
                 detectVerticalDragGestures(
                     onDragStart = {
@@ -100,7 +121,6 @@ fun PopUpDialog(
 
 @SuppressLint("UnusedTransitionTargetStateParameter")
 @Suppress("UnusedPrivateMember")
-// will use it when implementing chromecast
 @Composable
 fun PopDownDialog(
     modifier: Modifier = Modifier,

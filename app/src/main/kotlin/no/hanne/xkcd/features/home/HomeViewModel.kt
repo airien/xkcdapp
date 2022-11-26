@@ -13,9 +13,11 @@ import no.hanne.xkcd.ViewModelBaseImpl
 import no.hanne.xkcd.core.models.network.NetworkingConstants
 import no.hanne.xkcd.core.models.xkcd.Comic
 import no.hanne.xkcd.core.repository.ComicRepository
+import no.hanne.xkcd.core.repository.DatastoreRepository
 import kotlin.random.Random
 
 interface HomeViewModel : ViewModelBase<HomeViewEffect> {
+    val notifyNewComic: Boolean
     val explainLink: String?
     val isLastEnabled: Boolean
     val isNextEnabled: Boolean
@@ -23,6 +25,7 @@ interface HomeViewModel : ViewModelBase<HomeViewEffect> {
     val isFirstEnabled: Boolean
     val comic: Comic?
     val isLoading: Boolean
+    fun hideNotifyNewComic()
     fun previous()
     fun next()
     fun first()
@@ -35,8 +38,11 @@ interface HomeViewModel : ViewModelBase<HomeViewEffect> {
 class HomeViewModelImpl @Inject constructor(
     override val resources: Resources,
     private val networkingConstants: NetworkingConstants,
-    private val comicRepository: ComicRepository
+    private val comicRepository: ComicRepository,
+    private val datastoreRepository: DatastoreRepository
 ) : ViewModelBaseImpl<HomeViewEffect>(), HomeViewModel {
+    private var latestComicStored: Int? = null
+    private var latest: Comic? = null
     override val isLastEnabled: Boolean
         get() = (comic?.num ?: 0) < (latest?.num ?: 0)
     override val isNextEnabled: Boolean
@@ -45,15 +51,21 @@ class HomeViewModelImpl @Inject constructor(
         get() = (comic?.num ?: 0) > 1
     override val isFirstEnabled: Boolean
         get() = (comic?.num ?: 0) > 1
-    private var latest: Comic? = null
+    override var notifyNewComic: Boolean by mutableStateOf(false)
     override var explainLink: String? by mutableStateOf(null)
     override var comic: Comic? by mutableStateOf(null)
     override var isLoading: Boolean by mutableStateOf(true)
 
     init {
         viewModelScope.launch {
+            latestComicStored = datastoreRepository.getLatest()
+
             comicRepository.latest.collect {
                 if (it != null) {
+                    if (latestComicStored != it.num) {
+                        notifyNewComic = true
+                    }
+                    datastoreRepository.storeLatest(it.num)
                     latest = it
                     if (comic == null) updateComic(it)
                 }
@@ -65,14 +77,8 @@ class HomeViewModelImpl @Inject constructor(
             isLoading = false
         }
     }
-
-    private fun updateComic(it: Comic?) {
-        comic = it
-        it?.let { c ->
-            explainLink = "${networkingConstants.explainUrl}${c.num}:_${
-            c.title?.replace(" ", "_")
-            }"
-        }
+    override fun hideNotifyNewComic() {
+        notifyNewComic = false
     }
 
     override fun previous() {
@@ -127,6 +133,15 @@ class HomeViewModelImpl @Inject constructor(
     override fun onErrorDialogDismissed() {
         super.onErrorDialogDismissed()
         isLoading = false
+    }
+
+    private fun updateComic(it: Comic?) {
+        comic = it
+        it?.let { c ->
+            explainLink = "${networkingConstants.explainUrl}${c.num}:_${
+                c.title?.replace(" ", "_")
+            }"
+        }
     }
 }
 sealed class HomeViewEffect {

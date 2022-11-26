@@ -11,20 +11,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons.Rounded
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import no.hanne.xkcd.R
 import no.hanne.xkcd.core.ui.components.AppRoundIconButton
 import no.hanne.xkcd.core.ui.components.ErrorDialog
+import no.hanne.xkcd.core.ui.components.PopUpDialog
 import no.hanne.xkcd.navigation.Route
 import no.hanne.xkcd.navigation.withParameters
 
@@ -33,6 +41,7 @@ import no.hanne.xkcd.navigation.withParameters
     viewModel: HomeViewModel =
         hiltViewModel<HomeViewModelImpl>()
 ) {
+    var showSearchPopup by remember { mutableStateOf(false) }
     val context = LocalContext.current
     LaunchedEffect("view-effects") {
         viewModel.viewEffect.collect { viewEffect: HomeViewEffect ->
@@ -78,14 +87,12 @@ import no.hanne.xkcd.navigation.withParameters
                 }
                 true -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.CenterHorizontally).weight(1f)
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .weight(1f)
                     )
                 }
             }
-            SearchControl(
-                Modifier.fillMaxWidth().padding(vertical = 5.dp, horizontal = 16.dp),
-                onSearch = viewModel::onSearch
-            )
             ControlsArea(
                 modifier = Modifier.fillMaxWidth(),
                 isFirstEnabled = viewModel.isFirstEnabled,
@@ -96,7 +103,8 @@ import no.hanne.xkcd.navigation.withParameters
                 onPrevious = viewModel::previous,
                 onRandom = viewModel::random,
                 onNext = viewModel::next,
-                onLast = viewModel::last
+                onLast = viewModel::last,
+                onSearch = { showSearchPopup = true }
             )
         }
 
@@ -109,6 +117,40 @@ import no.hanne.xkcd.navigation.withParameters
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
                 ContextCompat.startActivity(context, browserIntent, null)
             }
+        }
+        PopUpDialog(
+            visible = viewModel.notifyNewComic,
+            hideDialog = viewModel::hideNotifyNewComic
+        ) {
+            Text(
+                text = stringResource(id = R.string.new_comic)
+            )
+        }
+
+        PopUpDialog(
+            modifier = Modifier
+                .align(Alignment.BottomStart),
+            visible = viewModel.notifyNewComic,
+            hideDialog = viewModel::hideNotifyNewComic
+        ) {
+            Text(
+                modifier = Modifier.padding(16.dp),
+                text = stringResource(id = R.string.new_comic)
+            )
+        }
+
+        PopUpDialog(
+            modifier = Modifier
+                .align(Alignment.BottomStart),
+            visible = showSearchPopup,
+            hideDialog = { showSearchPopup = false }
+        ) {
+            SearchControl(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                onSearch = viewModel::onSearch
+            )
         }
     }
 }
