@@ -10,11 +10,13 @@ import javax.inject.Inject
 import kotlinx.coroutines.launch
 import no.hanne.xkcd.ViewModelBase
 import no.hanne.xkcd.ViewModelBaseImpl
+import no.hanne.xkcd.core.models.network.NetworkingConstants
 import no.hanne.xkcd.core.models.xkcd.Comic
 import no.hanne.xkcd.core.repository.ComicRepository
 import kotlin.random.Random
 
 interface HomeViewModel : ViewModelBase<HomeViewEffect> {
+    val explainLink: String?
     val isLastEnabled: Boolean
     val isNextEnabled: Boolean
     val isPreviousEnabled: Boolean
@@ -31,6 +33,7 @@ interface HomeViewModel : ViewModelBase<HomeViewEffect> {
 @HiltViewModel
 class HomeViewModelImpl @Inject constructor(
     override val resources: Resources,
+    private val networkingConstants: NetworkingConstants,
     private val comicRepository: ComicRepository
 ) : ViewModelBaseImpl<HomeViewEffect>(), HomeViewModel {
     override val isLastEnabled: Boolean
@@ -42,6 +45,7 @@ class HomeViewModelImpl @Inject constructor(
     override val isFirstEnabled: Boolean
         get() = (comic?.num ?: 0) > 1
     private var latest: Comic? = null
+    override var explainLink: String? by mutableStateOf(null)
     override var comic: Comic? by mutableStateOf(null)
     override var isLoading: Boolean by mutableStateOf(true)
 
@@ -50,7 +54,7 @@ class HomeViewModelImpl @Inject constructor(
             comicRepository.latest.collect {
                 if (it != null) {
                     latest = it
-                    if (comic == null) comic = it
+                    if (comic == null) updateComic(it)
                 }
             }
         }
@@ -61,12 +65,21 @@ class HomeViewModelImpl @Inject constructor(
         }
     }
 
+    private fun updateComic(it: Comic?) {
+        comic = it
+        it?.let { c ->
+            explainLink = "${networkingConstants.explainUrl}${c.num}:_${
+            c.title?.replace(" ", "_")
+            }"
+        }
+    }
+
     override fun previous() {
         comic?.num?.let { number ->
             if (number > 0) {
                 isLoading = true
                 runRequest({ comicRepository.getComic(number - 1) }) {
-                    comic = it
+                    updateComic(it)
                     isLoading = false
                 }
             }
@@ -78,7 +91,7 @@ class HomeViewModelImpl @Inject constructor(
             if (number != latest?.num) {
                 isLoading = true
                 runRequest({ comicRepository.getComic(number + 1) }) {
-                    comic = it
+                    updateComic(it)
                     isLoading = false
                 }
             }
@@ -88,7 +101,7 @@ class HomeViewModelImpl @Inject constructor(
     override fun first() {
         isLoading = true
         runRequest({ comicRepository.getComic(1) }) {
-            comic = it
+            updateComic(it)
             isLoading = false
         }
     }
@@ -101,7 +114,7 @@ class HomeViewModelImpl @Inject constructor(
         isLoading = true
         val num = Random.nextInt(0, latest?.num ?: 2000)
         runRequest({ comicRepository.getComic(num) }) {
-            comic = it
+            updateComic(it)
             isLoading = false
         }
     }

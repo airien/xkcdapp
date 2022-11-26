@@ -300,6 +300,7 @@ fun AppContentButton(
 
 @Composable
 fun AppRoundIconButton(
+    modifier: Modifier = Modifier,
     icon: ImageVector,
     imageWidthDp: Dp = 20.dp,
     borderWidth: Dp = 1.dp,
@@ -309,7 +310,7 @@ fun AppRoundIconButton(
     onClick: () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier then Modifier
             .clip(shape = CircleShape)
             .background(color = backgroundColor)
             .size((imageWidthDp.value + 16).dp)

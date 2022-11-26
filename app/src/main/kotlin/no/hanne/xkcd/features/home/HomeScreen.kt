@@ -1,5 +1,7 @@
 package no.hanne.xkcd.features.home
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,13 +12,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.icons.Icons.Rounded
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import no.hanne.xkcd.core.ui.components.AppRoundIconButton
 import no.hanne.xkcd.core.ui.components.ErrorDialog
 
 @Composable fun HomeScreen(
@@ -24,6 +33,7 @@ import no.hanne.xkcd.core.ui.components.ErrorDialog
     viewModel: HomeViewModel =
         hiltViewModel<HomeViewModelImpl>()
 ) {
+    val context = LocalContext.current
     LaunchedEffect("view-effects") {
         viewModel.viewEffect.collect { viewEffect: HomeViewEffect ->
            /* when (viewEffect) {
@@ -62,7 +72,7 @@ import no.hanne.xkcd.core.ui.components.ErrorDialog
                     false -> {
                         ComicArea(
                             modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-                            comic = viewModel.comic
+                            comic = viewModel.comic,
                         )
                     }
                     true -> {
@@ -82,6 +92,17 @@ import no.hanne.xkcd.core.ui.components.ErrorDialog
                 onNext = viewModel::next,
                 onLast = viewModel::last
             )
+        }
+
+        viewModel.explainLink?.let {
+            AppRoundIconButton(
+                modifier = Modifier.align(Alignment.TopEnd),
+                borderColor = Color.Transparent,
+                icon = Rounded.Info
+            ) {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                ContextCompat.startActivity(context, browserIntent, null)
+            }
         }
     }
 }

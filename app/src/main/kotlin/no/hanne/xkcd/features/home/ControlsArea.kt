@@ -31,33 +31,33 @@ fun ControlsArea(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         AppRoundIconButton(
-            Rounded.FastRewind,
+            icon = Rounded.SkipPrevious,
             tint = if (isPreviousEnabled) Color.Black else Color.White,
             borderColor = if (isFirstEnabled) Color.Black else Color.White
         ) {
             if (isFirstEnabled) onFirst()
         }
         AppRoundIconButton(
-            Rounded.SkipPrevious,
+            icon = Rounded.FastRewind,
             tint = if (isPreviousEnabled) Color.Black else Color.White,
             borderColor = if (isPreviousEnabled) Color.Black else Color.White
         ) {
             if (isPreviousEnabled) onPrevious()
         }
         AppRoundIconButton(
-            Rounded.Shuffle
+            icon = Rounded.Shuffle
         ) {
             onRandom()
         }
         AppRoundIconButton(
-            Rounded.SkipNext,
+            icon = Rounded.FastForward,
             tint = if (isNextEnabled) Color.Black else Color.White,
             borderColor = if (isNextEnabled) Color.Black else Color.White
         ) {
             if (isNextEnabled) onNext()
         }
         AppRoundIconButton(
-            Rounded.FastForward,
+            icon = Rounded.SkipNext,
             tint = if (isLastEnabled) Color.Black else Color.White,
             borderColor = if (isLastEnabled) Color.Black else Color.White
         ) {
