@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import no.hanne.xkcd.ViewModelBase
 import no.hanne.xkcd.ViewModelBaseImpl
@@ -13,7 +14,6 @@ import no.hanne.xkcd.core.models.xkcd.Comic
 import no.hanne.xkcd.core.repository.ComicRepository
 import no.hanne.xkcd.core.repository.DatastoreRepository
 import no.hanne.xkcd.features.favourite.FavouriteViewEffect.NavigateBack
-import javax.inject.Inject
 
 interface FavouriteViewModel : ViewModelBase<FavouriteViewEffect> {
     val isLoading: Boolean
@@ -31,15 +31,19 @@ class FavouriteViewModelImpl @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val locRes = mutableListOf<Comic>()
             datastoreRepository.getFavourites().forEach {
-                runRequestAsync({
-                    comicRepository.getComic(it)
-                }).await()?.let { comic ->
-                    locRes.add(comic) }
+                loadComic(it)
             }
-            result = locRes
             isLoading = false
+        }
+    }
+    private fun loadComic(num: Int) {
+        viewModelScope.launch {
+            runRequestAsync({
+                comicRepository.getComic(num)
+            }).await()?.let { comic ->
+                result = result.plus(comic)
+            }
         }
     }
     override fun onErrorDialogDismissed() {
